@@ -34,6 +34,14 @@ def delete(qurl, receipt_handle):
     )
     return response
 
+def mvOne(source, target):
+    # get a msg off of dlq
+    fromDlq = receive(source)
+    # grab body
+    body = ???
+    # send body to normal q
+
+    # if ^ success, delete orig dlq msg, otherwise fail with output
 
 # runs
 
@@ -44,9 +52,11 @@ def delete(qurl, receipt_handle):
 #print(receive(dlq_url))
 
 # receive and delete
+'''
 getone = receive(dlq_url)
 print("resp from receive: %s" % getone)
 receipt_handle = getone['Messages'][0]['ReceiptHandle']
 print(receipt_handle)
 resp = delete(dlq_url, receipt_handle)
 print("resp from delete: %s" % resp)
+'''
