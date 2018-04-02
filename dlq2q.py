@@ -38,8 +38,15 @@ def delete(qurl, receipt_handle):
 # runs
 
 # sending a message
-#print(send(dlq_url,'{"test":"test"}'))
+#print(send(dlq_url,'{"test":"test with anna here"}'))
 
-print(receive(dlq_url))
-#message = response['Messages'][0]
-#receipt_handle = message['ReceiptHandle']
+# receive a message
+#print(receive(dlq_url))
+
+# receive and delete
+getone = receive(dlq_url)
+print("resp from receive: %s" % getone)
+receipt_handle = getone['Messages'][0]['ReceiptHandle']
+print(receipt_handle)
+resp = delete(dlq_url, receipt_handle)
+print("resp from delete: %s" % resp)
