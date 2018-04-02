@@ -20,7 +20,7 @@ def send(qurl, msg):
     return response
 
 # returns SQS response object
-def receive(qurl):
+def receive(qurl, batchSize=1):
     response = sqs.receive_message(
         QueueUrl=qurl
     )
@@ -37,14 +37,32 @@ def delete(qurl, receipt_handle):
 def mvOne(source, target):
     # get a msg off of dlq
     fromDlq = receive(source)
+    print(fromDlq)
+    
     # grab body
-    body = ???
+    body = fromDlq['Messages'][0]['Body']
+    receiptHandle = fromDlq['Messages'][0]['ReceiptHandle']
+    # print(body)
+    
     # send body to normal q
+    onQueue = send(q_url, body)
+    # print(onQueue)
 
     # if ^ success, delete orig dlq msg, otherwise fail with output
+    if onQueue['ResponseMetadata']['HTTPStatusCode'] == 200:
+        onDelete = delete(dlq_url, receiptHandle)
+        # print(onDelete)
+    else:
+        print("Send failed to write to queue!")
+
+    
+    
 
 # runs
 
+
+for x in range(0,1) :
+    mvOne(dlq_url, q_url)
 # sending a message
 #print(send(dlq_url,'{"test":"test with anna here"}'))
 
