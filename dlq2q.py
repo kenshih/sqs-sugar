@@ -45,7 +45,7 @@ def delete(qurl, receipt_handle):
 def mvOne(source, target):
     # get a msg off of dlq
     fromDlq = receive(source)
-    print(fromDlq)
+    #print(fromDlq)
 
     # grab body
     body = fromDlq['Messages'][0]['Body']
