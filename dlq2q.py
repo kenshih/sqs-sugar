@@ -1,4 +1,12 @@
 import boto3
+import argparse
+
+parser = argparse.ArgumentParser(description='move from dead-letter-queue to queue')
+parser.add_argument('--num', type=int, nargs='?', required=True,
+                    help='number of messages to move from dead-letter')
+args = parser.parse_args()
+#parser.print_help()
+desiredBatchSize = args.num
 
 # Create SQS client
 sqs = boto3.client('sqs')
@@ -38,12 +46,12 @@ def mvOne(source, target):
     # get a msg off of dlq
     fromDlq = receive(source)
     print(fromDlq)
-    
+
     # grab body
     body = fromDlq['Messages'][0]['Body']
     receiptHandle = fromDlq['Messages'][0]['ReceiptHandle']
     # print(body)
-    
+
     # send body to normal q
     onQueue = send(q_url, body)
     # print(onQueue)
@@ -55,13 +63,13 @@ def mvOne(source, target):
     else:
         print("Send failed to write to queue!")
 
-    
-    
+
+
 
 # runs
 
 
-for x in range(0,1) :
+for x in range(0,desiredBatchSize) :
     mvOne(dlq_url, q_url)
 # sending a message
 #print(send(dlq_url,'{"test":"test with anna here"}'))
