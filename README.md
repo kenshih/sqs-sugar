@@ -1,4 +1,8 @@
 
+# Overview
+
+This is a script that moves Dead Letter Queue (DLQ) messages off of DLQ and back to the original Queue. After doing so, it deletes the DLQ message.
+
 # Prerequisites
 
 Set env for
